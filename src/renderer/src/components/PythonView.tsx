@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Terminal, { type TerminalHandle } from './Terminal'
 import CodeEditor from './CodeEditor'
+import ProgramCards from './ProgramCards'
+import PythonSyntax from './PythonSyntax'
 import { PythonSession } from '../python/session'
 import { LESSONS, PY_INTRO, REPL_GUIDE } from '../python/lessons'
 
@@ -15,7 +17,7 @@ const BANNER =
 const PS1 = '>>> '
 const PS2 = '... '
 
-type Tab = 'repl' | 'editor' | 'guide'
+type Tab = 'repl' | 'editor' | 'guide' | 'examples' | 'syntax'
 
 export default function PythonView(): JSX.Element {
   const [tab, setTab] = useState<Tab>('repl')
@@ -115,13 +117,21 @@ export default function PythonView(): JSX.Element {
   return (
     <div className="py-view">
       <div className="py-tabs">
-        {(['repl', 'editor', 'guide'] as Tab[]).map((t) => (
+        {(
+          [
+            ['repl', '>_ REPL'],
+            ['editor', '✎ Editor'],
+            ['guide', '★ Getting Started'],
+            ['examples', '▣ Examples'],
+            ['syntax', '? Syntax']
+          ] as [Tab, string][]
+        ).map(([t, label]) => (
           <button
             key={t}
             className={'py-tab' + (tab === t ? ' active' : '')}
             onClick={() => setTab(t)}
           >
-            {t === 'repl' ? '>_ REPL' : t === 'editor' ? '✎ Editor' : '★ Getting Started'}
+            {label}
           </button>
         ))}
       </div>
@@ -168,25 +178,27 @@ export default function PythonView(): JSX.Element {
             </div>
           </div>
 
-          {LESSONS.map((l) => (
-            <div className="py-lesson" key={l.title}>
-              <div className="py-lesson-head">
-                <span className="py-lesson-title">{l.title}</span>
-                <span className="py-lesson-actions">
-                  <button className="btn btn-sm" onClick={() => { setEditorText(l.code + '\n'); setTab('editor') }}>
-                    Try it
-                  </button>
-                  <button className="btn btn-sm" onClick={() => runCode(l.code, '# ── lesson ──')} disabled={!ready}>
-                    ▶ Run
-                  </button>
-                </span>
-              </div>
-              <div className="py-lesson-blurb">{l.blurb}</div>
-              <pre className="py-lesson-code">{l.code}</pre>
-            </div>
-          ))}
+          <p className="py-intro">
+            Ready to try things? Open the <strong>Examples</strong> tab to load and run little
+            programs, or the <strong>Syntax</strong> tab for a quick reference.
+          </p>
         </div>
       )}
+
+      {tab === 'examples' && (
+        <ProgramCards
+          title="Examples"
+          blurb="Short Python programs to learn from. Press Load to open one in the Editor, or Run to see it in the REPL."
+          items={LESSONS.map((l) => ({ name: l.title, description: l.blurb, code: l.code }))}
+          onLoad={(code) => {
+            setEditorText(code + '\n')
+            setTab('editor')
+          }}
+          onRun={(code) => runCode(code, '# ── example ──')}
+        />
+      )}
+
+      {tab === 'syntax' && <PythonSyntax />}
     </div>
   )
 }

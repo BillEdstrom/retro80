@@ -619,6 +619,8 @@ body {
 }
 .ref-example code {
   color: var(--text-muted);
+  /* Preserve newlines + indentation for multi-line examples (e.g. Python). */
+  white-space: pre-wrap;
 }
 
 .guide-section {

@@ -95,10 +95,18 @@ export class PythonSession {
   load(): Promise<void> {
     if (this.loading) return this.loading
     this.loading = (async () => {
+      // MicroPython delivers stdout one byte at a time (linebuffer:false). Feed
+      // the bytes through a streaming UTF-8 decoder so multi-byte characters
+      // (em-dashes, accents, emoji) reassemble correctly instead of turning into
+      // mojibake like "â€".
+      const decoder = new TextDecoder('utf-8')
       const mp = await loadMicroPython({
         url: mpWasmUrl,
         linebuffer: false,
-        stdout: (b: number) => this.out(String.fromCharCode(b))
+        stdout: (b: number) => {
+          const s = decoder.decode(new Uint8Array([b]), { stream: true })
+          if (s) this.out(s)
+        }
       })
       mp.registerJsModule('_jsb', { input: (p: string) => this.askInput(p ?? '') })
       mp.runPython(INIT)

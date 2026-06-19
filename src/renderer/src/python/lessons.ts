@@ -72,6 +72,27 @@ export const LESSONS: Lesson[] = [
     ].join('\n')
   },
   {
+    title: '★ Mad Lib (silly story)',
+    blurb:
+      'Change the words at the top, then press Run for a wacky story — fun practice with ' +
+      'variables and f-strings. (Type your words right into the code for now; typed-in answers ' +
+      'are coming soon.)',
+    code: [
+      '# MAD LIB — change the words, then press Run!',
+      'animal = "dog"',
+      'action = "wiggle"',
+      'place = "the moon"',
+      'number = 7',
+      'food = "pizza"',
+      '',
+      'print("One day a", animal, "wanted to", action + ".")',
+      'print(f"So it traveled all the way to {place}!")',
+      'print(f"The trip took {number} days and {number * 2} snacks.")',
+      'print(f"The yummiest snack was {food}.")',
+      'print("THE END — change the words and run it again!")'
+    ].join('\n')
+  },
+  {
     title: '4 · Lists',
     blurb: 'A list holds many values in order. Index from 0; slice with [a:b].',
     code: [
