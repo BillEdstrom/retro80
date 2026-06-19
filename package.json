@@ -42,5 +42,9 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite": "^5.4.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BillEdstrom/retro80.git"
   }
 }
