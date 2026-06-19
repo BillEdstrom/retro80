@@ -38,7 +38,6 @@ export default function Sidebar({
   onToggleLowercase
 }: Props): JSX.Element {
   const userPrograms = programs.filter((p) => p.source === 'user')
-  const factoryPrograms = programs.filter((p) => p.source === 'factory')
   // The BASIC IDE spans these views (Console / Editor / Quick Start / Syntax).
   const isBasic = view === 'console' || view === 'editor' || view === 'quickstart' || view === 'syntax'
   const isActive = (p: ProgramEntry): boolean =>
@@ -123,29 +122,6 @@ export default function Sidebar({
                   }}
                 >
                   ×
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="sidebar-section">
-          <div className="sidebar-head">
-            <span>SAMPLES</span>
-            <span className="sidebar-tag" title="Read-only factory presets — edits save as your own copy">
-              factory
-            </span>
-          </div>
-          <ul className="program-list">
-            {factoryPrograms.map((p) => (
-              <li key={'f:' + p.name} className={'program-item' + (isActive(p) ? ' active' : '')}>
-                <button
-                  className="program-open"
-                  onClick={() => onOpen(p.name, 'factory')}
-                  title="Open (read-only preset)"
-                >
-                  <span className="program-dot">◆</span>
-                  {p.name}
                 </button>
               </li>
             ))}

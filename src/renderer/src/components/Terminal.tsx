@@ -13,13 +13,17 @@ interface Props {
   // cursor hidden (use Stop to break in).
   inputActive: boolean
   onSubmit: (line: string) => void
+  // 'trs80' (default) = the authentic Model I ROM font, sized to a 64-column
+  // screen. 'mono' = a plain monospace at a normal size — used by the Python
+  // REPL, where the tall ROM font (and forced uppercase) is confusing.
+  variant?: 'trs80' | 'mono'
 }
 
 // A single scrolling text flow with the input cursor rendered INLINE at the
 // real caret position, so arrow keys / Home / End / mid-line edits all show
 // where you are — modern editing inside a vintage screen.
 const Terminal = forwardRef<TerminalHandle, Props>(function Terminal(
-  { output, inputActive, onSubmit },
+  { output, inputActive, onSubmit, variant = 'trs80' },
   ref
 ): JSX.Element {
   const [line, setLine] = useState('')
@@ -35,6 +39,12 @@ const Terminal = forwardRef<TerminalHandle, Props>(function Terminal(
   // em of the ROM font is a full character cell, 3 units tall by 1 wide — so
   // font-size = (width / 64 columns) * 3.
   useEffect(() => {
+    // Plain monospace (Python REPL): a fixed, readable size — no 64-column ROM
+    // scaling.
+    if (variant === 'mono') {
+      setFontSize(14)
+      return
+    }
     const el = scrollRef.current
     if (!el) return
     const update = (): void => {
@@ -47,7 +57,7 @@ const Terminal = forwardRef<TerminalHandle, Props>(function Terminal(
     const ro = new ResizeObserver(update)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [])
+  }, [variant])
 
   useImperativeHandle(ref, () => ({
     focusInput: () => inputRef.current?.focus(),
@@ -134,7 +144,10 @@ const Terminal = forwardRef<TerminalHandle, Props>(function Terminal(
   const after = line.slice(caret + 1)
 
   return (
-    <div className="terminal" onClick={() => inputRef.current?.focus()}>
+    <div
+      className={'terminal' + (variant === 'mono' ? ' terminal-mono' : '')}
+      onClick={() => inputRef.current?.focus()}
+    >
       <div className="terminal-scroll" ref={scrollRef}>
         <pre className="terminal-output" style={{ fontSize }}>
           {output}

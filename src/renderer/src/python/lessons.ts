@@ -12,6 +12,38 @@ export const PY_INTRO =
   'Editor to write a whole program. Work through the lessons below; press "Try it" to load ' +
   'one into the editor, or "Run" to see it go.'
 
+// A plain-language primer for the REPL itself — the >>> prompt — shown at the top
+// of the Getting Started tab. Aimed at someone who has never used a REPL.
+export const REPL_GUIDE: { head: string; body: string }[] = [
+  {
+    head: 'What the REPL is',
+    body:
+      'The REPL is the >>> prompt on the REPL tab. It runs one line at a time and shows the ' +
+      'result instantly. Type 2 + 2 and press Enter — it prints 4. You don’t need print() for a ' +
+      'single value; the REPL echoes whatever your line evaluates to.'
+  },
+  {
+    head: 'Multi-line code (loops, if, def)',
+    body:
+      'End a line with a colon (:) and the prompt changes to ... — keep typing the indented body ' +
+      '(4 spaces). Press Enter on an empty line to finish the block and run it. Example: type ' +
+      '“for i in range(3):”, Enter, “    print(i)”, Enter, then Enter again.'
+  },
+  {
+    head: 'Things you make stick around',
+    body:
+      'Variables and functions you create at the prompt stay available for the rest of the session, ' +
+      'so you can build up an answer step by step.'
+  },
+  {
+    head: 'The Editor + Run (like “python -i”)',
+    body:
+      'For anything longer than a line or two, write it on the Editor tab. Press Run there — or just ' +
+      'type RUN at the >>> prompt — to execute it. Afterwards its functions and variables are live at ' +
+      'the prompt, so you can poke at them. Type LIST at the prompt to print the Editor’s program here.'
+  }
+]
+
 export const LESSONS: Lesson[] = [
   {
     title: '1 · Hello, world',

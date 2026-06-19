@@ -1447,3 +1447,59 @@ body {
   flex-shrink: 0;
   font-size: 13px;
 }
+
+/* Plain-monospace terminal (Python REPL): readable normal font, no ROM scaling,
+   no forced uppercase (Python is case-sensitive), no CRT glow. */
+.terminal-mono .terminal-output {
+  font-family: var(--mono);
+  line-height: 1.5;
+  letter-spacing: 0;
+  max-width: none;
+  text-transform: none;
+  text-shadow: none;
+}
+.terminal-mono .terminal-cursor {
+  border-radius: 1px;
+}
+
+/* "How the REPL works" primer at the top of the Python Getting Started tab. */
+.repl-guide {
+  margin: 0 0 22px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--bg-elev);
+}
+.repl-guide-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.repl-guide-item {
+  margin-bottom: 11px;
+}
+.repl-guide-head {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.repl-guide-body {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+.repl-guide-cmds {
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+.repl-guide-cmds code {
+  font-family: var(--mono);
+  color: var(--amber);
+  padding: 1px 4px;
+}

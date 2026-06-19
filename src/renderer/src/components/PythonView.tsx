@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Terminal, { type TerminalHandle } from './Terminal'
 import CodeEditor from './CodeEditor'
 import { PythonSession } from '../python/session'
-import { LESSONS, PY_INTRO } from '../python/lessons'
+import { LESSONS, PY_INTRO, REPL_GUIDE } from '../python/lessons'
 
 // One engine for the whole session: loading MicroPython is the expensive part, so
 // keep it alive across view switches (and keep your REPL variables with it).
@@ -64,10 +64,25 @@ export default function PythonView(): JSX.Element {
     (line: string) => {
       if (!sess) return
       append(line + '\n')
+      // BASIC-style conveniences for the editor program, usable from the prompt:
+      // RUN executes it (vars stay live), LIST shows it. Case-insensitive; only
+      // the bare word is intercepted, so list(...) etc. still work as Python.
+      const cmd = line.trim().toLowerCase()
+      if (cmd === 'run') {
+        if (editorText.trim()) sess.runProgram(editorText)
+        else append('(the Editor is empty — nothing to run)\n')
+        append(PS1)
+        return
+      }
+      if (cmd === 'list') {
+        append((editorText.trim() ? editorText.replace(/\n+$/, '') : '(the Editor is empty)') + '\n')
+        append(PS1)
+        return
+      }
       const more = sess.replLine(line)
       append(more ? PS2 : PS1)
     },
-    [sess, append]
+    [sess, append, editorText]
   )
 
   const runCode = useCallback(
@@ -112,7 +127,13 @@ export default function PythonView(): JSX.Element {
       </div>
 
       {tab === 'repl' && (
-        <Terminal ref={termRef} output={output} inputActive={ready} onSubmit={onReplSubmit} />
+        <Terminal
+          ref={termRef}
+          output={output}
+          inputActive={ready}
+          onSubmit={onReplSubmit}
+          variant="mono"
+        />
       )}
 
       {tab === 'editor' && (
@@ -133,6 +154,20 @@ export default function PythonView(): JSX.Element {
       {tab === 'guide' && (
         <div className="py-guide">
           <p className="py-intro">{PY_INTRO}</p>
+
+          <div className="repl-guide">
+            <div className="repl-guide-title">★ How the REPL works</div>
+            {REPL_GUIDE.map((g) => (
+              <div className="repl-guide-item" key={g.head}>
+                <div className="repl-guide-head">{g.head}</div>
+                <div className="repl-guide-body">{g.body}</div>
+              </div>
+            ))}
+            <div className="repl-guide-cmds">
+              Prompt shortcuts: <code>RUN</code> runs the Editor program · <code>LIST</code> shows it
+            </div>
+          </div>
+
           {LESSONS.map((l) => (
             <div className="py-lesson" key={l.title}>
               <div className="py-lesson-head">

@@ -15,6 +15,28 @@ export default function QuickStart({ onTry, onRun }: Props): JSX.Element {
         on an 8-bit machine.
       </p>
 
+      <h2>Example programs</h2>
+      <p className="muted">Click “Try it” to load one into the Editor, or “Run” to see it go.</p>
+      <div className="sample-grid">
+        {SAMPLES.map((s) => (
+          <div className="sample-card" key={s.name}>
+            <div className="sample-card-head">
+              <span className="sample-name">{s.name}</span>
+              <div className="sample-card-actions">
+                <button className="btn btn-sm" onClick={() => onTry(s.code, s.name)}>
+                  Try it
+                </button>
+                <button className="btn btn-sm btn-run" onClick={() => onRun(s.code)}>
+                  Run
+                </button>
+              </div>
+            </div>
+            <p className="sample-desc">{s.description}</p>
+            <pre className="sample-code">{s.code}</pre>
+          </div>
+        ))}
+      </div>
+
       <h2>Two ways to work</h2>
       <ol>
         <li>
@@ -62,7 +84,7 @@ export default function QuickStart({ onTry, onRun }: Props): JSX.Element {
       <pre className="code-block">{`┌ CHR$(9484)    ┐ CHR$(9488)    ─ CHR$(9472)
 └ CHR$(9492)    ┘ CHR$(9496)    │ CHR$(9474)
 ├ CHR$(9500)    ┤ CHR$(9508)    ┼ CHR$(9532)`}</pre>
-      <p>Open the <strong>BOX</strong> example below to see them in action.</p>
+      <p>Open the <strong>BOX</strong> example above to see them in action.</p>
 
       <h2>Lowercase mod</h2>
       <p>
@@ -73,27 +95,6 @@ export default function QuickStart({ onTry, onRun }: Props): JSX.Element {
         its case either way.
       </p>
 
-      <h2>Example programs</h2>
-      <p className="muted">Click “Edit” to load one into the editor, or “Run” to see it go.</p>
-      <div className="sample-grid">
-        {SAMPLES.map((s) => (
-          <div className="sample-card" key={s.name}>
-            <div className="sample-card-head">
-              <span className="sample-name">{s.name}</span>
-              <div className="sample-card-actions">
-                <button className="btn btn-sm" onClick={() => onTry(s.code, s.name)}>
-                  Edit
-                </button>
-                <button className="btn btn-sm btn-run" onClick={() => onRun(s.code)}>
-                  Run
-                </button>
-              </div>
-            </div>
-            <p className="sample-desc">{s.description}</p>
-            <pre className="sample-code">{s.code}</pre>
-          </div>
-        ))}
-      </div>
     </div>
   )
 }
