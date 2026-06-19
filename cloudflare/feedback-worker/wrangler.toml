@@ -7,4 +7,4 @@ compatibility_date = "2024-11-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "retro80-feedback"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "c6a80a5f-7dda-4e8b-b775-411e78f4076a"
