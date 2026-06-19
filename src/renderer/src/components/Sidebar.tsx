@@ -1,5 +1,6 @@
 import type { View, ProgramEntry, ProgramSource } from '../App'
 import { VERSION_LABEL } from '../version'
+import UpdateBadge from './UpdateBadge'
 
 interface Props {
   view: View
@@ -161,6 +162,8 @@ export default function Sidebar({
         <span className="mod-label">Lowercase mod</span>
         <span className="mod-state">{lowercaseMod ? 'ON' : 'OFF'}</span>
       </button>
+
+      <UpdateBadge />
 
       <div className="sidebar-footer">Retro80 {VERSION_LABEL}</div>
     </aside>
