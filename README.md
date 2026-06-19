@@ -36,11 +36,21 @@ Other scripts:
 npm test          # run the interpreter unit tests
 npm run typecheck # type-check main + renderer
 npm run build     # produce the production bundle in ./out
-npm run dist:mac  # build an installable .dmg / .zip in ./dist
+npm run dist:mac  # build an installable .dmg / .zip in ./dist (signed if creds present)
 ```
 
-> Note: `dist:mac` produces an **unsigned** app for personal use. The first time
-> you open it, right-click the app and choose **Open** to bypass Gatekeeper.
+## Releasing
+
+Retro80 ships as a **signed, notarized, auto-updating** macOS app. To cut a
+release that installed users will receive as an in-app update:
+
+```bash
+./scripts/release.sh 0.40.0 "What changed in this version"
+```
+
+See **[RELEASING.md](RELEASING.md)** for the full guide — prerequisites
+(Apple Developer ID cert, `.env`, `gh`), how the auto-updater works, and
+troubleshooting.
 
 ## Project layout
 

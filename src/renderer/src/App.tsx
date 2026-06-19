@@ -26,20 +26,16 @@ export type View =
   | 'trs80'
   | 'demon'
   | 'dogstar'
-  | 'nim'
   | 'pyramid'
   | 'haunted'
-  | 'lunar'
 
 // Views that show the TRS-80 emulator, mapped to the program they run.
 const TRS80_VIEWS: Record<string, string> = {
   trs80: 'basic',
   demon: 'demon',
   dogstar: 'dogstar',
-  nim: 'nim',
   pyramid: 'pyramid',
-  haunted: 'haunted',
-  lunar: 'lunar'
+  haunted: 'haunted'
 }
 // 'factory' = a built-in sample (read-only, always pristine from samples.ts).
 // 'user' = saved by the user to disk (editable, deletable).

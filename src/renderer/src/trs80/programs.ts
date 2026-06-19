@@ -10,10 +10,8 @@
 
 import { DEMON_BYTES } from './dancingDemon'
 import { DOGSTAR_BYTES } from './dogStar'
-import { NIM_BYTES } from './androidNim'
 import { PYRAMID_BYTES } from './pyramid'
 import { HAUNTED_BYTES } from './hauntedHouse'
-import { LUNAR_BYTES } from './lunarLander'
 
 // Per-program manual: shown from the ⓘ INFO button / right-click in the
 // emulator view. `play` is how to operate it; `hints` are tips & tricks
@@ -110,30 +108,6 @@ export const TRS80_PROGRAMS: Record<string, Trs80Program> = {
       ]
     }
   },
-  nim: {
-    id: 'nim',
-    title: 'TRS-80 MODEL I — ANDROID NIM (1978, LEO CHRISTOPHERSON)',
-    bytes: NIM_BYTES,
-    load: 'cassette',
-    hint: 'animated robots · pick a row (1-3) and how many to remove',
-    help: {
-      about:
-        "Leo Christopherson's first animation hit (1978) — the Dancing Demon's older sibling. Three rows of fidgeting androids play the ancient game of Nim against you; the robots blink, look around, and get zapped when removed.",
-      play: [
-        'Read the on-screen rules, press ENTER, and wait for the androids to assemble.',
-        'When the * appears it is your turn: press a row number (1, 2 or 3), then how many androids to remove from that row. No ENTER needed.',
-        'You may remove any number of androids from one row per turn.',
-        'Whoever removes the LAST android WINS.',
-        'Press R to resign.'
-      ],
-      hints: [
-        'Nim has perfect strategy: XOR the three row counts (write each in binary). A position is losing for whoever moves if the XOR is zero.',
-        'So: always leave your opponent a zero-XOR position — e.g. equal pairs like 2-2 or 1-1 with the third row empty.',
-        'Opening with rows of 7-5-3? XOR is 1, so the first player can win: remove 1 from the 7 row, then mirror from there.',
-        'The androids watch the cursor while they wait. They know.'
-      ]
-    }
-  },
   pyramid: {
     id: 'pyramid',
     title: 'TRS-80 MODEL I — PYRAMID 2000 (1979, RADIO SHACK)',
@@ -179,30 +153,6 @@ export const TRS80_PROGRAMS: Record<string, Trs80Program> = {
         'Doors and containers can be OPENed; furniture can be LOOKed at and moved.',
         'Map the house, including up and down — old houses have attics and cellars.',
         'If something seems haunted… it probably reacts to the right object or word.'
-      ]
-    }
-  },
-  lunar: {
-    id: 'lunar',
-    title: 'TRS-80 MODEL I — LUNA LANDER (1978, WALTER SMITH)',
-    bytes: LUNAR_BYTES,
-    load: 'cassette',
-    hint: 'answer the prompts with numbers · land softly',
-    help: {
-      about:
-        'Walter Smith\'s 1978 take on the classic moon-landing problem: a rocket falls toward the surface and you decide, burn by burn, how much fuel to spend slowing down. Physics is unforgiving; fuel is finite.',
-      play: [
-        'Answer the prompts with NUMBERS (it is 1978 BASIC: type 0 for no, 1 for yes when asked about instructions).',
-        'Pick a mode: 1 NOVICE, 2 INTERMEDIATE, 3 EXPERT.',
-        'Each turn shows FUEL, ALT (altitude) and VEL (velocity), then asks AMOUNT OF FUEL TO BE BURNED.',
-        'Burning fuel slows your descent (DIRECTION UP means you are climbing!). Burning 0 saves fuel but you fall faster.',
-        'Touch down with a very low velocity to land instead of crater.'
-      ],
-      hints: [
-        'The classic strategy is the "suicide burn": burn little or nothing early, then brake hard late — it is the most fuel-efficient profile.',
-        'But do not overdo it: if VEL flips to DIRECTION UP you are wasting fuel bouncing.',
-        'Aim to arrive in the last ~100 meters with plenty of fuel and moderate speed, then feather small burns to touch down gently.',
-        'Out of fuel high up = a very expensive crater. Leave a reserve.'
       ]
     }
   }

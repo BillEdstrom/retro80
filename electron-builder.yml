@@ -22,10 +22,9 @@ mac:
   gatekeeperAssess: false
   entitlements: build/entitlements.mac.plist
   entitlementsInherit: build/entitlements.mac.plist
-  # Notarization via notarytool. teamId comes from the APPLE_TEAM_ID env var;
-  # credentials come from APPLE_ID + APPLE_APP_SPECIFIC_PASSWORD env vars.
-  notarize:
-    teamId: ${env.APPLE_TEAM_ID}
+  # Notarization via notarytool. All creds come from env vars:
+  # APPLE_ID + APPLE_APP_SPECIFIC_PASSWORD + APPLE_TEAM_ID.
+  notarize: true
 dmg:
   artifactName: ${productName}-${version}.${ext}
 # Update feed + release host. owner/repo are auto-detected from the git remote

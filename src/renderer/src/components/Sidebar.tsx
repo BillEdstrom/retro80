@@ -20,10 +20,8 @@ const TRS80_NAV: { id: View; label: string; icon: string }[] = [
   { id: 'trs80', label: 'Level II BASIC', icon: '80' },
   { id: 'demon', label: 'Dancing Demon', icon: '♪' },
   { id: 'dogstar', label: 'Dog Star Adv.', icon: '✦' },
-  { id: 'nim', label: 'Android Nim', icon: '◉' },
   { id: 'pyramid', label: 'Pyramid 2000', icon: '▲' },
-  { id: 'haunted', label: 'Haunted House', icon: '⌂' },
-  { id: 'lunar', label: 'Luna Lander', icon: '☾' }
+  { id: 'haunted', label: 'Haunted House', icon: '⌂' }
 ]
 
 export default function Sidebar({
