@@ -21,6 +21,23 @@ interface UpdaterEvent {
   userInitiated?: boolean
 }
 
+// GitHub release notes come through electron-updater as HTML (e.g. wrapped in
+// <p>…</p>). Strip tags and decode the few common entities so they render as
+// clean text in the toast.
+function plainNotes(html: string): string {
+  return html
+    .replace(/<\/(p|div|li|h\d)>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\n{2,}/g, '\n')
+    .trim()
+}
+
 export default function UpdateBanner(): JSX.Element | null {
   const [state, setState] = useState<State>({ kind: 'idle' })
 
@@ -90,7 +107,7 @@ export default function UpdateBanner(): JSX.Element | null {
         <>
           <span className="update-msg">
             <strong>Update available — v{state.version}</strong>
-            {state.notes ? <span className="update-notes">{state.notes}</span> : null}
+            {state.notes ? <span className="update-notes">{plainNotes(state.notes)}</span> : null}
           </span>
           <span className="update-actions">
             <button className="btn btn-run btn-sm" onClick={download}>
