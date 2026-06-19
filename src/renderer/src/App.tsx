@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar'
 import Terminal, { type TerminalHandle } from './components/Terminal'
 import CodeEditor from './components/CodeEditor'
 import QuickStart from './components/QuickStart'
+import ProgramCards from './components/ProgramCards'
 import SyntaxGuide from './components/SyntaxGuide'
 import Overlay, { type OverlayKind } from './components/Overlay'
 import GraphicsScreen from './components/GraphicsScreen'
@@ -20,6 +21,8 @@ export type View =
   | 'console'
   | 'editor'
   | 'quickstart'
+  | 'examples'
+  | 'demos'
   | 'syntax'
   | 'demonstudio'
   | 'python'
@@ -37,6 +40,12 @@ const TRS80_VIEWS: Record<string, string> = {
   pyramid: 'pyramid',
   haunted: 'haunted'
 }
+// The big, show-off programs live under the "Demos" tab; everything else is a
+// short "Example". (Tweak this set to recategorize.)
+const DEMO_NAMES = new Set(['DEMON', 'FRESH80', 'GRAPHICS', 'JAM', 'POKEART', 'BOUNCE', 'ADVENTURE'])
+const EXAMPLE_SAMPLES = SAMPLES.filter((s) => !DEMO_NAMES.has(s.name))
+const DEMO_SAMPLES = SAMPLES.filter((s) => DEMO_NAMES.has(s.name))
+
 // 'factory' = a built-in sample (read-only, always pristine from samples.ts).
 // 'user' = saved by the user to disk (editable, deletable).
 export type ProgramSource = 'factory' | 'user'
@@ -457,13 +466,20 @@ export default function App(): JSX.Element {
           </div>
         </div>
 
-        {(view === 'console' || view === 'editor' || view === 'quickstart' || view === 'syntax') && (
+        {(view === 'console' ||
+          view === 'editor' ||
+          view === 'quickstart' ||
+          view === 'examples' ||
+          view === 'demos' ||
+          view === 'syntax') && (
           <div className="py-tabs">
             {(
               [
                 ['console', '>_ Console'],
                 ['editor', '✎ Editor'],
-                ['quickstart', '★ Quick Start'],
+                ['quickstart', '★ Getting Started'],
+                ['examples', '▣ Examples'],
+                ['demos', '✦ Demos'],
                 ['syntax', '? Syntax']
               ] as [View, string][]
             ).map(([v, label]) => (
@@ -537,8 +553,24 @@ export default function App(): JSX.Element {
             onExport={(name, text) => window.api.exportProgram(name, text)}
           />
         )}
-        {view === 'quickstart' && (
-          <QuickStart onTry={loadSampleToEditor} onRun={runProgram} />
+        {view === 'quickstart' && <QuickStart />}
+        {view === 'examples' && (
+          <ProgramCards
+            title="Examples"
+            blurb="Short, friendly programs to learn from. Press Load to open one in the Editor, or Run to play it."
+            items={EXAMPLE_SAMPLES}
+            onLoad={loadSampleToEditor}
+            onRun={runProgram}
+          />
+        )}
+        {view === 'demos' && (
+          <ProgramCards
+            title="Demos"
+            blurb="Bigger show-off programs — games, music, and animation. Press Run to watch, or Load to explore the code."
+            items={DEMO_SAMPLES}
+            onLoad={loadSampleToEditor}
+            onRun={runProgram}
+          />
         )}
         {view === 'syntax' && <SyntaxGuide />}
         {view === 'demonstudio' && <DancingDemon />}

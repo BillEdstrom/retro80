@@ -1503,3 +1503,72 @@ body {
   color: var(--amber);
   padding: 1px 4px;
 }
+
+/* ---------------- Example / Demo program cards ---------------- */
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.prog-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-panel);
+  padding: 12px 14px;
+}
+.prog-card-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.prog-card-text {
+  flex: 1;
+  min-width: 0; /* allow the text to shrink instead of pushing buttons off-screen */
+}
+.prog-card-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.prog-card-desc {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.prog-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.prog-card-toggle {
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--sans);
+  font-size: 12px;
+  cursor: pointer;
+}
+.prog-card-toggle:hover {
+  color: var(--text-dim);
+}
+.prog-card-code {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text);
+  white-space: pre;
+  overflow-x: auto;      /* long lines scroll inside the card — no page overflow */
+  max-height: 280px;
+  overflow-y: auto;
+}

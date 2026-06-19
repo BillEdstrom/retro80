@@ -281,6 +281,28 @@ export const SAMPLES: Sample[] = [
     ].join('\n')
   },
   {
+    name: 'MADLIB',
+    description: 'Fill in silly words and get a wacky story! A fun first look at INPUT.',
+    code: [
+      '10 REM ---- SILLY STORY MAKER (MAD LIB) ----',
+      '20 PRINT "LET\'S WRITE A SILLY STORY!"',
+      '30 PRINT "TYPE A WORD FOR EACH ONE, THEN PRESS ENTER."',
+      '40 PRINT',
+      '50 INPUT "AN ANIMAL"; A$',
+      '60 INPUT "A SILLY ACTION WORD (LIKE WIGGLE)"; V$',
+      '70 INPUT "A PLACE"; P$',
+      '80 INPUT "A NUMBER"; N',
+      '90 INPUT "YOUR FAVORITE FOOD"; F$',
+      '100 PRINT',
+      '110 PRINT "ONE DAY A "; A$; " WANTED TO "; V$; "."',
+      '120 PRINT "SO IT TRAVELED ALL THE WAY TO "; P$; "!"',
+      '130 PRINT "THE TRIP TOOK"; N; "DAYS AND"; N * 2; "SNACKS."',
+      '140 PRINT "THE YUMMIEST SNACK OF ALL WAS "; F$; "."',
+      '150 PRINT',
+      '160 PRINT "THE END. RUN IT AGAIN FOR A NEW STORY!"'
+    ].join('\n')
+  },
+  {
     name: 'MATH',
     description: 'A tiny interactive calculator using INPUT.',
     code: [

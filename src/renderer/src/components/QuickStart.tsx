@@ -1,41 +1,13 @@
-import { SAMPLES } from '../samples'
-
-interface Props {
-  onTry: (code: string, name: string) => void
-  onRun: (code: string) => void
-}
-
-export default function QuickStart({ onTry, onRun }: Props): JSX.Element {
+export default function QuickStart(): JSX.Element {
   return (
     <div className="page">
-      <h1>Quick Start</h1>
+      <h1>Getting Started</h1>
       <p className="lead">
         Retro80 is a small, friendly BASIC in the spirit of vintage Microsoft BASIC.
         You write numbered lines to build a program, then <code>RUN</code> it — just like
-        on an 8-bit machine.
+        on an 8-bit machine. When you’re ready, peek at the <strong>Examples</strong> and{' '}
+        <strong>Demos</strong> tabs and press <strong>Run</strong> to see them go.
       </p>
-
-      <h2>Example programs</h2>
-      <p className="muted">Click “Try it” to load one into the Editor, or “Run” to see it go.</p>
-      <div className="sample-grid">
-        {SAMPLES.map((s) => (
-          <div className="sample-card" key={s.name}>
-            <div className="sample-card-head">
-              <span className="sample-name">{s.name}</span>
-              <div className="sample-card-actions">
-                <button className="btn btn-sm" onClick={() => onTry(s.code, s.name)}>
-                  Try it
-                </button>
-                <button className="btn btn-sm btn-run" onClick={() => onRun(s.code)}>
-                  Run
-                </button>
-              </div>
-            </div>
-            <p className="sample-desc">{s.description}</p>
-            <pre className="sample-code">{s.code}</pre>
-          </div>
-        ))}
-      </div>
 
       <h2>Two ways to work</h2>
       <ol>

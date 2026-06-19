@@ -38,8 +38,15 @@ export default function Sidebar({
   onToggleLowercase
 }: Props): JSX.Element {
   const userPrograms = programs.filter((p) => p.source === 'user')
-  // The BASIC IDE spans these views (Console / Editor / Quick Start / Syntax).
-  const isBasic = view === 'console' || view === 'editor' || view === 'quickstart' || view === 'syntax'
+  // The BASIC IDE spans these views (Console / Editor / Getting Started /
+  // Examples / Demos / Syntax).
+  const isBasic =
+    view === 'console' ||
+    view === 'editor' ||
+    view === 'quickstart' ||
+    view === 'examples' ||
+    view === 'demos' ||
+    view === 'syntax'
   const isActive = (p: ProgramEntry): boolean =>
     currentName === p.name && currentSource === p.source
 
