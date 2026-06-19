@@ -12,7 +12,11 @@ const buildDate = new Date().toISOString().slice(0, 10)
 const versionDefines = {
   __APP_VERSION__: JSON.stringify(pkg.version),
   __APP_BUILD__: JSON.stringify(buildInfo.build),
-  __APP_BUILD_DATE__: JSON.stringify(buildDate)
+  __APP_BUILD_DATE__: JSON.stringify(buildDate),
+  // Sentry crash-reporting DSN (not secret — designed to ship in the client).
+  // Supplied via the SENTRY_DSN env var (the release script sources .env). When
+  // empty, Sentry stays disabled, so local/dev builds report nothing.
+  __SENTRY_DSN__: JSON.stringify(process.env.SENTRY_DSN || '')
 }
 
 export default defineConfig({

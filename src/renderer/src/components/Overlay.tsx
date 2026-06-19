@@ -15,9 +15,12 @@ const STACK: { name: string; detail: string }[] = [
   { name: 'TypeScript 5', detail: 'application + interpreter' },
   { name: 'React 18', detail: 'user interface' },
   { name: 'electron-vite / Vite 5', detail: 'build & dev server' },
-  { name: 'electron-builder', detail: 'macOS packaging (.dmg / .zip)' },
+  { name: 'electron-builder', detail: 'signed + notarized macOS packaging (.dmg / .zip)' },
+  { name: 'electron-updater', detail: 'in-app auto-update from GitHub Releases' },
+  { name: 'Sentry', detail: 'crash & error reporting' },
+  { name: 'MicroPython (WASM)', detail: 'the real Python engine behind RetroPython' },
   { name: 'Node.js 24', detail: 'toolchain & test runner' },
-  { name: 'Interpreter', detail: 'hand-written tokenizer → parser → tree-walking evaluator (no dependencies)' },
+  { name: 'BASIC interpreter', detail: 'hand-written tokenizer → parser → tree-walking evaluator (no dependencies)' },
   { name: 'TRS-80 emulator', detail: "Lawrence Kesteloot's MIT-licensed Z80 / Model I emulator — runs the real 1979 Dancing Demon" }
 ]
 
@@ -58,9 +61,10 @@ function About(): JSX.Element {
       </div>
       <p className="about-desc">
         An ’80s home-computer playground for the desktop. Write and RUN vintage
-        Microsoft / TRS-80–style BASIC in a retro terminal — or step into a real,
-        emulated TRS-80 Model I and watch Leo Christopherson’s 1979 Dancing Demon
-        tap-dance to “Ain’t She Sweet.”
+        Microsoft / TRS-80–style BASIC in a retro terminal, learn real Python in
+        the RetroPython REPL — or step into a real, emulated TRS-80 Model I and
+        watch Leo Christopherson’s 1979 Dancing Demon tap-dance to “Ain’t She
+        Sweet.” It signs, notarizes, and updates itself.
       </p>
 
       <h3>Tech stack</h3>

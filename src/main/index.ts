@@ -8,6 +8,11 @@ import { join } from 'path'
 import { promises as fs } from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { setupUpdater, checkForUpdatesFromMenu } from './updater'
+import { initSentry } from './sentry'
+
+// Crash/error reporting — initialize before anything else so early failures are
+// captured too. No-op when no DSN is configured (dev builds).
+initSentry()
 
 // Replaced at build time by Vite (see `define` in electron.vite.config.ts).
 declare const __APP_VERSION__: string
@@ -34,6 +39,15 @@ function buildMenu(win: BrowserWindow): Menu {
   const isMac = process.platform === 'darwin'
   const show = (which: 'about' | 'devlog'): void => {
     win.webContents.send('show-overlay', which)
+  }
+  // Open the user's mail client with a pre-addressed bug report (works for
+  // non-technical friends & family; complements the automatic crash reporting).
+  const reportBug = (): void => {
+    const subject = encodeURIComponent(`Retro80 bug report (v${__APP_VERSION__})`)
+    const body = encodeURIComponent(
+      'What happened?\n\n\nWhat were you doing when it happened?\n\n\n(Feel free to attach a screenshot.)\n'
+    )
+    shell.openExternal(`mailto:w.edstrom@gmail.com?subject=${subject}&body=${body}`)
   }
 
   const template: MenuItemConstructorOptions[] = [
@@ -66,6 +80,7 @@ function buildMenu(win: BrowserWindow): Menu {
       submenu: [
         { label: 'Development Log', click: () => show('devlog') },
         { label: 'Check for Updates…', click: () => checkForUpdatesFromMenu() },
+        { label: 'Report a Bug…', click: () => reportBug() },
         { label: 'About Retro80', click: () => show('about') }
       ]
     }
