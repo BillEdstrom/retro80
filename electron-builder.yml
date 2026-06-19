@@ -1,0 +1,23 @@
+appId: com.edstrom.retro80
+productName: Retro80
+directories:
+  buildResources: build
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml,package-lock.json}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+asarUnpack:
+  - resources/**
+mac:
+  category: public.app-category.developer-tools
+  target:
+    - dmg
+    - zip
+  # Unsigned local build. For personal use you can right-click > Open the first time.
+  identity: null
+dmg:
+  artifactName: ${productName}-${version}.${ext}
+npmRebuild: false
