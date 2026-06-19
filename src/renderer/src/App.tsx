@@ -13,6 +13,7 @@ import Trs80Emulator from './components/Trs80Emulator'
 import DancingDemon from './components/DancingDemon'
 import PythonView from './components/PythonView'
 import HelpPanel from './components/HelpPanel'
+import UpdateBanner from './components/UpdateBanner'
 import { TRS80_PROGRAMS } from './trs80/programs'
 
 export type View =
@@ -551,6 +552,7 @@ export default function App(): JSX.Element {
         )}
       </main>
       {overlay && <Overlay kind={overlay} onClose={() => setOverlay(null)} />}
+      <UpdateBanner />
     </div>
   )
 }

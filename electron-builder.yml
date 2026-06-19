@@ -16,8 +16,21 @@ mac:
   target:
     - dmg
     - zip
-  # Unsigned local build. For personal use you can right-click > Open the first time.
-  identity: null
+  # Signed + notarized for distribution. electron-builder auto-discovers the
+  # "Developer ID Application" certificate in the login keychain.
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  # Notarization via notarytool. teamId comes from the APPLE_TEAM_ID env var;
+  # credentials come from APPLE_ID + APPLE_APP_SPECIFIC_PASSWORD env vars.
+  notarize:
+    teamId: ${env.APPLE_TEAM_ID}
 dmg:
   artifactName: ${productName}-${version}.${ext}
+# Update feed + release host. owner/repo are auto-detected from the git remote
+# (or package.json "repository") at build time and baked into app-update.yml,
+# which electron-updater reads at runtime to find new releases.
+publish:
+  provider: github
 npmRebuild: false

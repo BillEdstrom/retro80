@@ -19,6 +19,19 @@ const api = {
     const listener = (_e: unknown, which: string): void => cb(which)
     ipcRenderer.on('show-overlay', listener)
     return () => ipcRenderer.removeListener('show-overlay', listener)
+  },
+  // ---- auto-update ----
+  updater: {
+    check: (): Promise<{ ok: boolean; reason?: string }> => ipcRenderer.invoke('updater:check'),
+    download: (): Promise<{ ok: boolean; reason?: string }> => ipcRenderer.invoke('updater:download'),
+    install: (): Promise<void> => ipcRenderer.invoke('updater:install'),
+    currentVersion: (): Promise<string> => ipcRenderer.invoke('updater:current-version'),
+    // Subscribe to updater status events. Returns an unsubscribe function.
+    onEvent: (cb: (evt: unknown) => void): (() => void) => {
+      const listener = (_e: unknown, evt: unknown): void => cb(evt)
+      ipcRenderer.on('updater:event', listener)
+      return () => ipcRenderer.removeListener('updater:event', listener)
+    }
   }
 }
 

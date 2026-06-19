@@ -7,6 +7,7 @@ import type { MenuItemConstructorOptions } from 'electron'
 import { join } from 'path'
 import { promises as fs } from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { setupUpdater, checkForUpdatesFromMenu } from './updater'
 
 // Replaced at build time by Vite (see `define` in electron.vite.config.ts).
 declare const __APP_VERSION__: string
@@ -43,6 +44,7 @@ function buildMenu(win: BrowserWindow): Menu {
             submenu: [
               { label: 'About Retro80', click: () => show('about') },
               { label: 'Development Log', click: () => show('devlog') },
+              { label: 'Check for Updates…', click: () => checkForUpdatesFromMenu() },
               { type: 'separator' as const },
               { role: 'services' as const },
               { type: 'separator' as const },
@@ -63,6 +65,7 @@ function buildMenu(win: BrowserWindow): Menu {
       role: 'help',
       submenu: [
         { label: 'Development Log', click: () => show('devlog') },
+        { label: 'Check for Updates…', click: () => checkForUpdatesFromMenu() },
         { label: 'About Retro80', click: () => show('about') }
       ]
     }
@@ -71,8 +74,11 @@ function buildMenu(win: BrowserWindow): Menu {
   return Menu.buildFromTemplate(template)
 }
 
+// The single main window — held so the updater can push events to it.
+let mainWindow: BrowserWindow | null = null
+
 function createWindow(): void {
-  const mainWindow = new BrowserWindow({
+  const win = new BrowserWindow({
     width: 1100,
     height: 720,
     minWidth: 720,
@@ -86,20 +92,24 @@ function createWindow(): void {
       sandbox: false
     }
   })
+  mainWindow = win
 
-  Menu.setApplicationMenu(buildMenu(mainWindow))
+  Menu.setApplicationMenu(buildMenu(win))
 
-  mainWindow.on('ready-to-show', () => mainWindow.show())
+  win.on('ready-to-show', () => win.show())
+  win.on('closed', () => {
+    mainWindow = null
+  })
 
-  mainWindow.webContents.setWindowOpenHandler((details) => {
+  win.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
 
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    win.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    win.loadFile(join(__dirname, '../renderer/index.html'))
   }
 }
 
@@ -160,6 +170,9 @@ app.whenReady().then(() => {
   })
 
   createWindow()
+
+  // Auto-update: check GitHub Releases on launch, notify in-app, install on demand.
+  setupUpdater(() => mainWindow)
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
