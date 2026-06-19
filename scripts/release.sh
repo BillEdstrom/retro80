@@ -94,8 +94,22 @@ fi
 step "Bumping version to $VERSION"
 node -e "const fs=require('fs');const p=require('./package.json');p.version='$VERSION';fs.writeFileSync('package.json',JSON.stringify(p,null,2)+'\n')"
 
+# Load .env BEFORE building: Vite bakes SENTRY_DSN / FEEDBACK_URL into the bundle
+# at `npm run build` time (they're read from process.env). Sourcing afterwards
+# only reaches the packaging step, which would ship them empty.
+step "Loading build-time config from .env"
+set -a; . "$ROOT/.env"; set +a
+
 step "Building (also bumps build-number.json)"
 npm run build
+# Verify the env-driven defines actually made it into the bundle (fail loudly if
+# not — `grep -q` reflects grep's own exit code, unlike `grep | head`).
+if [ -n "${SENTRY_DSN:-}" ] && ! grep -q "ingest.*sentry.io" out/main/index.js; then
+  die "SENTRY_DSN did not bake into the build — aborting."
+fi
+if [ -n "${FEEDBACK_URL:-}" ] && ! grep -q "$(printf '%s' "$FEEDBACK_URL" | sed 's/[\/&]/\\&/g; s|https\?://||')" out/main/index.js; then
+  die "FEEDBACK_URL did not bake into the build — aborting."
+fi
 
 step "Committing and pushing"
 git add package.json build-number.json
@@ -103,8 +117,6 @@ git commit -m "Release $TAG"
 git push origin "$BRANCH"
 
 step "Signing + notarizing + publishing to GitHub (this can take a few minutes)"
-# Load Apple credentials; inject the gh token for publishing without storing it.
-set -a; . "$ROOT/.env"; set +a
 export GH_TOKEN="$(gh auth token)"
 ./node_modules/.bin/electron-builder --mac --publish always
 
