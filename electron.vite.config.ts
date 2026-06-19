@@ -16,7 +16,10 @@ const versionDefines = {
   // Sentry crash-reporting DSN (not secret — designed to ship in the client).
   // Supplied via the SENTRY_DSN env var (the release script sources .env). When
   // empty, Sentry stays disabled, so local/dev builds report nothing.
-  __SENTRY_DSN__: JSON.stringify(process.env.SENTRY_DSN || '')
+  __SENTRY_DSN__: JSON.stringify(process.env.SENTRY_DSN || ''),
+  // In-app feedback endpoint (the Cloudflare Worker). Supplied via FEEDBACK_URL
+  // in .env. When empty, the feedback form reports it's not configured yet.
+  __FEEDBACK_URL__: JSON.stringify(process.env.FEEDBACK_URL || '')
 }
 
 export default defineConfig({

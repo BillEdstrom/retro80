@@ -1,0 +1,10 @@
+name = "retro80-feedback"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# D1 database binding. After `wrangler d1 create retro80-feedback`, paste the
+# printed database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "retro80-feedback"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"

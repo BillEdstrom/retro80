@@ -16,6 +16,7 @@ initSentry()
 
 // Replaced at build time by Vite (see `define` in electron.vite.config.ts).
 declare const __APP_VERSION__: string
+declare const __FEEDBACK_URL__: string
 
 function programsDir(): string {
   return join(app.getPath('userData'), 'programs')
@@ -37,17 +38,8 @@ function safeName(name: string): string {
 // items, which tell the renderer to show the corresponding overlay.
 function buildMenu(win: BrowserWindow): Menu {
   const isMac = process.platform === 'darwin'
-  const show = (which: 'about' | 'devlog'): void => {
+  const show = (which: 'about' | 'devlog' | 'feedback'): void => {
     win.webContents.send('show-overlay', which)
-  }
-  // Open the user's mail client with a pre-addressed bug report (works for
-  // non-technical friends & family; complements the automatic crash reporting).
-  const reportBug = (): void => {
-    const subject = encodeURIComponent(`Retro80 bug report (v${__APP_VERSION__})`)
-    const body = encodeURIComponent(
-      'What happened?\n\n\nWhat were you doing when it happened?\n\n\n(Feel free to attach a screenshot.)\n'
-    )
-    shell.openExternal(`mailto:w.edstrom@gmail.com?subject=${subject}&body=${body}`)
   }
 
   const template: MenuItemConstructorOptions[] = [
@@ -80,7 +72,7 @@ function buildMenu(win: BrowserWindow): Menu {
       submenu: [
         { label: 'Development Log', click: () => show('devlog') },
         { label: 'Check for Updates…', click: () => checkForUpdatesFromMenu() },
-        { label: 'Report a Bug…', click: () => reportBug() },
+        { label: 'Send Feedback…', click: () => show('feedback') },
         { label: 'About Retro80', click: () => show('about') }
       ]
     }
@@ -183,6 +175,33 @@ app.whenReady().then(() => {
     await fs.writeFile(filePath, content, 'utf8')
     return filePath
   })
+
+  // ---- IPC: in-app feedback → Cloudflare Worker ----
+  ipcMain.handle(
+    'feedback:submit',
+    async (_e, payload: { type: string; message: string; email?: string; consent?: boolean }) => {
+      const url = __FEEDBACK_URL__
+      if (!url) return { ok: false, reason: 'not-configured' }
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            app: 'retro80',
+            version: __APP_VERSION__,
+            os: `${process.platform} ${process.getSystemVersion?.() ?? ''}`.trim(),
+            type: payload.type,
+            message: payload.message,
+            email: payload.email || null,
+            consent: !!payload.consent
+          })
+        })
+        return res.ok ? { ok: true } : { ok: false, reason: `HTTP ${res.status}` }
+      } catch (e) {
+        return { ok: false, reason: String((e as Error)?.message || e) }
+      }
+    }
+  )
 
   createWindow()
 

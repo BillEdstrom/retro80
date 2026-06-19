@@ -20,6 +20,13 @@ const api = {
     ipcRenderer.on('show-overlay', listener)
     return () => ipcRenderer.removeListener('show-overlay', listener)
   },
+  // ---- in-app feedback ----
+  submitFeedback: (payload: {
+    type: string
+    message: string
+    email?: string
+    consent?: boolean
+  }): Promise<{ ok: boolean; reason?: string }> => ipcRenderer.invoke('feedback:submit', payload),
   // ---- auto-update ----
   updater: {
     check: (): Promise<{ ok: boolean; reason?: string }> => ipcRenderer.invoke('updater:check'),

@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { DEVLOG } from '../devlog'
 import { VERSION, BUILD, BUILD_DATE } from '../version'
+import FeedbackForm from './FeedbackForm'
 
-export type OverlayKind = 'about' | 'devlog'
+export type OverlayKind = 'about' | 'devlog' | 'feedback'
 
 interface Props {
   kind: OverlayKind
@@ -38,14 +39,14 @@ export default function Overlay({ kind, onClose }: Props): JSX.Element {
       <div className="overlay-panel" onClick={(e) => e.stopPropagation()}>
         <div className="overlay-head">
           <span className="overlay-title">
-            {kind === 'about' ? 'About Retro80' : 'Development Log'}
+            {kind === 'about' ? 'About Retro80' : kind === 'devlog' ? 'Development Log' : 'Send Feedback'}
           </span>
           <button className="overlay-close" onClick={onClose} title="Close (Esc)">
             ×
           </button>
         </div>
         <div className="overlay-body">
-          {kind === 'about' ? <About /> : <DevLog />}
+          {kind === 'about' ? <About /> : kind === 'devlog' ? <DevLog /> : <FeedbackForm onClose={onClose} />}
         </div>
       </div>
     </div>
