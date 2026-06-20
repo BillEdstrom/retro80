@@ -93,6 +93,38 @@ export const LESSONS: Lesson[] = [
     ].join('\n')
   },
   {
+    title: '★ Bouncing ball (text)',
+    blurb:
+      'Print frame-by-frame "filmstrip" of a ball bouncing around a box — the same idea as the ' +
+      'BASIC BALL demo: move by a direction, and flip the direction at the walls. (RetroPython is ' +
+      'text-only for now, so this draws with letters.)',
+    code: [
+      '# BOUNCING BALL — read the frames top to bottom to see it move!',
+      'W, H = 18, 8        # box width and height',
+      'x, y = 2, 2         # ball position',
+      'dx, dy = 1, 1       # ball direction',
+      '',
+      'for frame in range(8):',
+      '    for row in range(H):',
+      '        line = ""',
+      '        for col in range(W):',
+      '            if col == x and row == y:',
+      '                line += "o"          # the ball',
+      '            elif row == 0 or row == H - 1 or col == 0 or col == W - 1:',
+      '                line += "#"          # the wall',
+      '            else:',
+      '                line += " "',
+      '        print(line)',
+      '    print()',
+      '    x += dx',
+      '    if x <= 1 or x >= W - 2:',
+      '        dx = -dx',
+      '    y += dy',
+      '    if y <= 1 or y >= H - 2:',
+      '        dy = -dy'
+    ].join('\n')
+  },
+  {
     title: '4 · Lists',
     blurb: 'A list holds many values in order. Index from 0; slice with [a:b].',
     code: [

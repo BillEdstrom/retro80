@@ -338,6 +338,48 @@ export const SAMPLES: Sample[] = [
     ].join('\n')
   },
   {
+    name: 'BALL',
+    description: 'A round ball bounces inside a drawn box — your first graphics animation.',
+    help: {
+      about:
+        'A little graphics animation: a round ball bounces around inside a box, flipping direction each time it hits a wall. A great first look at SET (turn a pixel on), RESET (turn it off), and PAUSE (to pace the motion).',
+      play: ['Press RUN and watch the ball bounce. Press Esc to leave the graphics screen.'],
+      hints: [
+        'Line 320 draws the ball: it lights every pixel inside an ellipse that is wider than tall (the 4 * J * J), so it looks round — TRS-80 graphics pixels are taller than wide.',
+        'Bouncing is just flipping the speed: when the ball reaches a wall, DX or DY becomes its negative (lines 110 and 120).',
+        'Make it faster with a smaller PAUSE on line 90, a bigger ball with larger RX / RY on line 30, or a wilder bounce with bigger DX / DY on line 40.'
+      ]
+    },
+    code: [
+      '10 REM ---- A BALL BOUNCING INSIDE A BOX ----',
+      '20 LFT = 8 : RGT = 119 : TOP = 2 : BOT = 45',
+      '30 RX = 6 : RY = 3 : REM ball is wider than tall so it looks round',
+      '40 CX = 40 : CY = 22 : DX = 2 : DY = 1',
+      '50 CLS',
+      '60 FOR F = 1 TO 600',
+      '70   GOSUB 500 : REM redraw the box so the walls stay crisp',
+      '80   GOSUB 300 : REM draw the ball',
+      '90   PAUSE 25',
+      '100   GOSUB 400 : REM erase the ball',
+      '110   CX = CX + DX : IF CX <= LFT + RX + 1 OR CX >= RGT - RX - 1 THEN DX = -DX',
+      '120   CY = CY + DY : IF CY <= TOP + RY + 1 OR CY >= BOT - RY - 1 THEN DY = -DY',
+      '130 NEXT F',
+      '140 GOSUB 500 : GOSUB 300 : END',
+      '300 REM -- draw the ball (an ellipse: wider than tall) --',
+      '310 FOR I = -RX TO RX : FOR J = -RY TO RY',
+      '320   IF I * I + 4 * J * J <= RX * RX + RX THEN SET(CX + I, CY + J)',
+      '330 NEXT J : NEXT I : RETURN',
+      '400 REM -- erase the ball --',
+      '410 FOR I = -RX TO RX : FOR J = -RY TO RY',
+      '420   IF I * I + 4 * J * J <= RX * RX + RX THEN RESET(CX + I, CY + J)',
+      '430 NEXT J : NEXT I : RETURN',
+      '500 REM -- draw the box --',
+      '510 FOR X = LFT TO RGT : SET(X, TOP) : SET(X, BOT) : NEXT X',
+      '520 FOR Y = TOP TO BOT : SET(LFT, Y) : SET(RGT, Y) : NEXT Y',
+      '530 RETURN'
+    ].join('\n')
+  },
+  {
     name: 'GUESS',
     description: 'A number-guessing game — shows WHILE/WEND and IF.',
     code: [
