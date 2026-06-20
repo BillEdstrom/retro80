@@ -1,0 +1,20 @@
+name = "retro80"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Serve the landing page (public/) as static assets. Requests that don't match a
+# file fall through to the Worker's fetch handler (e.g. POST /subscribe).
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Same D1 database as the feedback Worker — subscribers + feedback in one place.
+[[d1_databases]]
+binding = "DB"
+database_name = "retro80-feedback"
+database_id = "c6a80a5f-7dda-4e8b-b775-411e78f4076a"
+
+[vars]
+# The shared access code (soft gate). Change/rotate here, then redeploy.
+ACCESS_CODE = "DEMON"
+GITHUB_REPO = "BillEdstrom/retro80"
