@@ -42,7 +42,17 @@ const TRS80_VIEWS: Record<string, string> = {
 }
 // The big, show-off programs live under the "Demos" tab; everything else is a
 // short "Example". (Tweak this set to recategorize.)
-const DEMO_NAMES = new Set(['DEMON', 'FRESH80', 'GRAPHICS', 'JAM', 'POKEART', 'BOUNCE', 'ADVENTURE'])
+const DEMO_NAMES = new Set([
+  'DEMON',
+  'FRESH80',
+  'GRAPHICS',
+  'JAM',
+  'POKEART',
+  'BOUNCE',
+  'ADVENTURE',
+  'HAMURABI',
+  'WUMPUS'
+])
 const EXAMPLE_SAMPLES = SAMPLES.filter((s) => !DEMO_NAMES.has(s.name))
 const DEMO_SAMPLES = SAMPLES.filter((s) => DEMO_NAMES.has(s.name))
 
